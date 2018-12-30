@@ -601,6 +601,120 @@ namespace boost { namespace numeric { namespace ublas {
      *
      * \tparam V the type of vector referenced (for example \c vector<double>)
      */
+	template <typename T, typename S>
+	class basic_randomlist
+	{
+		typedef S size_type;
+	public:
+		T* array_;
+		size_type len_;
+
+		basic_randomlist(T* arry, size_type len)
+			: array_(nullptr)
+			, len_(len)
+		{
+			array_ = new T[len_];
+			for (int i = 0; i < len_; ++i)
+				array_[i] = arry[i];
+		}
+
+		size_type size() const
+		{
+			return len_;
+		}
+
+		basic_randomlist(const basic_randomlist& list)
+			: array_(nullptr)
+			, len_(list.len_)
+		{
+			array_ = new T[len_];
+			for (size_type i = 0; i < len_; ++i)
+				array_[i] = list.array_[i];
+		}
+
+		BOOST_UBLAS_INLINE
+			T operator () (size_type i) const{
+			return array_[i];
+		}
+
+		BOOST_UBLAS_INLINE
+			const T& operator [] (size_type i) const {
+			return array_[i];
+		}
+		BOOST_UBLAS_INLINE
+			T& operator [] (size_type i) {
+			return array_[i];
+		}
+
+	};
+
+	template <class V>
+	class vector_randomlist
+		: public vector_expression<vector_randomlist<V> >
+	{
+		typedef vector_randomlist<V> self_type;
+
+
+	public:
+#ifdef BOOST_UBLAS_ENABLE_PROXY_SHORTCUTS
+		using vector_expression<self_type>::operator ();
+#endif
+	
+
+		typedef const V const_vector_type;
+		typedef V vector_type;
+		typedef typename V::size_type size_type;
+		typedef typename V::difference_type difference_type;
+		typedef typename V::value_type value_type;
+		typedef typename V::const_reference const_reference;
+		typedef typename boost::mpl::if_<boost::is_const<V>,
+		typename V::const_reference,
+		typename V::reference>::type reference;
+		typedef typename boost::mpl::if_<boost::is_const<V>,
+		typename V::const_closure_type,
+		typename V::closure_type>::type vector_closure_type;
+		typedef basic_randomlist<value_type, size_type> randomlist_type;
+		typedef const self_type const_closure_type;
+		typedef self_type closure_type;
+		typedef typename storage_restrict_traits<typename V::storage_category,
+			dense_proxy_tag>::storage_category storage_category;
+
+		BOOST_UBLAS_INLINE
+			vector_randomlist(vector_type &data, const randomlist_type &l) :
+			data_(data), list_(l) {
+			// Early checking of preconditions here.
+			// BOOST_UBLAS_CHECK (s_.start () <= data_.size () &&
+			//                    s_.start () + s_.stride () * (s_.size () - (s_.size () > 0)) <= data_.size (), bad_index ());
+		}
+
+		BOOST_UBLAS_INLINE
+			const_reference operator () (size_type i) const {
+			return data_(list_(i));
+		}
+		BOOST_UBLAS_INLINE
+			reference operator () (size_type i) {
+			return data_(list_(i));
+		}
+
+		BOOST_UBLAS_INLINE
+			size_type size() const {
+			return list_.size();
+		}
+
+		BOOST_UBLAS_INLINE
+			const_reference operator [] (size_type i) const {
+			return (*this) (i);
+		}
+		BOOST_UBLAS_INLINE
+			reference operator [] (size_type i) {
+			return (*this) (i);
+		}
+
+	private:
+		vector_closure_type data_;
+		randomlist_type list_;
+	};
+
     template<class V>
     class vector_slice:
         public vector_expression<vector_slice<V> > {
@@ -1637,7 +1751,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
 
     private:
-        vector_closure_type data_;
+		vector_closure_type data_;
         indirect_array_type ia_;
     };
 

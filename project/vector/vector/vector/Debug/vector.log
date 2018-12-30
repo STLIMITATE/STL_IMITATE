@@ -1,1 +1,14 @@
-﻿
+﻿  vectorTest.cpp
+c:\boost_1_69_0\boost_1_69_0\boost\numeric\ublas\vector_proxy.hpp(617): warning C4018: “<”: 有符号/无符号不匹配
+  c:\boost_1_69_0\boost_1_69_0\boost\numeric\ublas\vector_proxy.hpp(612): note: 编译 类 模板 成员函数 "boost::numeric::ublas::basic_randomlist<int,unsigned int>::basic_randomlist(T *,unsigned int)" 时
+          with
+          [
+              T=int
+          ]
+  c:\boost_1_69_0\boost_1_69_0\boost\project\vector\vector\vector\vectortest.cpp(14): note: 参见对正在编译的函数 模板 实例化“boost::numeric::ublas::basic_randomlist<int,unsigned int>::basic_randomlist(T *,unsigned int)”的引用
+          with
+          [
+              T=int
+          ]
+  c:\boost_1_69_0\boost_1_69_0\boost\project\vector\vector\vector\vectortest.cpp(14): note: 参见对正在编译的 类 模板 实例化 "boost::numeric::ublas::basic_randomlist<int,unsigned int>" 的引用
+  vector.vcxproj -> C:\boost_1_69_0\boost_1_69_0\boost\project\vector\vector\Debug\vector.exe

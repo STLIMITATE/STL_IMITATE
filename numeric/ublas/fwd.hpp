@@ -70,6 +70,8 @@ namespace boost { namespace numeric { namespace ublas {
     class vector_range;
     template<class V>
     class vector_slice;
+	template<class V>
+	class vector_randomlist;
     template<class V, class IA = indirect_array<> >
     class vector_indirect;
 

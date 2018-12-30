@@ -2,12 +2,20 @@
 //
 
 #include <iostream>
-#include "myVector.h"
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
+#include <boost/numeric/ublas/io.hpp>
+//#include "myVector.h"
 
-int main()
-{
-	Vector<std::string> myVec(3, "sss");
-    std::cout << "Hello World!\n"; 
+int main() {
+	using namespace boost::numeric::ublas;
+	vector<int> v(20, 0);
+	int array[5] = { 0, 3, 4, 6, 8 };
+	basic_randomlist<int, vector<int>::size_type> randoml((int*)array, 5);
+	vector_randomlist<vector<int> > vrl(v, randoml);
+	for (unsigned i = 0; i < randoml.size(); ++i)
+		vrl(i) = i;
+	std::cout << vrl << std::endl;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

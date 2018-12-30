@@ -204,6 +204,7 @@ namespace boost { namespace numeric { namespace ublas {
         typedef vector_range<E> vector_range_type;
         typedef vector_range<const E> const_vector_range_type;
         typedef vector_slice<E> vector_slice_type;
+		typedef vector_randomlist<E> vector_randomlist_type;
         typedef vector_slice<const E> const_vector_slice_type;
         // vector_indirect_type will depend on the A template parameter 
         typedef basic_range<> default_range;    // required to avoid range/slice name confusion
